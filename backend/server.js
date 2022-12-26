@@ -17,7 +17,7 @@ const app = express();
 
 app.use(bodyPraser.json());
 app.use(cors())
-
+// mongoConnect()
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 app.use((req, res, next) => {

@@ -8,6 +8,9 @@
     "start": "node -r dotenv/config server.js",
     "dev": "nodemon -r dotenv/config server.js"
   },
+  "engines": {
+    "node": "14.17.5"
+  },
   "author": "vishal",
   "license": "ISC",
   "dependencies": {

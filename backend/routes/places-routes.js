@@ -2,22 +2,29 @@ const express = require('express');
 
 const { check, body } = require('express-validator');
 
-const placesControllers = require('../controllers/places-controllers');
+const { 
+    createPlace,
+    getAllPlaces, 
+    getPlacesById,
+    getPlacesByUserId,
+    updatePlacesById,
+    deletePlacesById
+} = require('../controllers/places-controllers');
 
 const fileUpload = require('../middelweare/file-upload');
 const checkAuth = require('../middelweare/check-auth');
 
 const router = express.Router();
 
-router.get('/', placesControllers.getAllPlaces);
+router.get('/', getAllPlaces);
 
-router.get('/:pid', placesControllers.getPlacesById);
+router.get('/:pid', getPlacesById);
 
-router.get('/user/:uid', placesControllers.getPlacesByUserId);
+router.get('/user/:uid', getPlacesByUserId);
 
 router.use(checkAuth);
 
-router.delete('/:pid', placesControllers.deletePlacesById);
+router.delete('/:pid', deletePlacesById);
 
 router.patch('/:pid',
 [
@@ -27,7 +34,7 @@ router.patch('/:pid',
     body('newDescription')
     .isLength({ min: 3 })
 ],
-placesControllers.updatePlacesById);
+updatePlacesById);
 
 
 router.post(
@@ -44,6 +51,6 @@ router.post(
         .isEmpty()
         .withMessage('Must be not empty')
     ],
-    placesControllers.createPlace);
+    createPlace);
 
 module.exports = router;

@@ -1,8 +1,6 @@
 const { validationResult } = require(`express-validator`);
 const fs = require('fs');
-
 const HttpError = require('../models/http-error');
-
 const getCoordsForAddress = require('../util/location');
 const Place = require('../models/place');
 const User = require('../models/user');
@@ -204,10 +202,11 @@ const deletePlacesById = async (req, res, next) => {
     res.status(200).json({ message: 'Deleted place.' });
 };
 
-
-exports.getAllPlaces = getAllPlaces;
-exports.getPlacesById = getPlacesById;
-exports.getPlacesByUserId = getPlacesByUserId;
-exports.createPlace = createPlace;
-exports.deletePlacesById = deletePlacesById;
-exports.updatePlacesById = updatePlacesById;
+module.exports={
+    createPlace,
+    getAllPlaces,
+    getPlacesById,
+    getPlacesByUserId,
+    updatePlacesById,
+    deletePlacesById
+}

@@ -2,12 +2,12 @@ const express = require('express');
 
 const { check } = require('express-validator');
 
-const usersControlers = require('../controllers/users-controllers');
+const { getUsers, login, signup } = require('../controllers/users-controllers');
 const fileUpload = require('../middelweare/file-upload');
 
 const router = express.Router();
 
-router.get('/', usersControlers.getUsers);
+router.get('/', getUsers);
 
 router.post('/signup',
     //mullter
@@ -25,8 +25,8 @@ router.post('/signup',
             .isLength({ min: 8 })
             .withMessage('Must contain at least 8 characters')
             .matches(/\d/).withMessage('must contain a number')
-    ], usersControlers.signup);
+    ], signup);
 
-router.post('/login', usersControlers.login);
+router.post('/login', login);
 
 module.exports = router;

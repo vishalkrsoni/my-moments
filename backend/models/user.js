@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+const { Schema, model } = require('mongoose');
+const { ObjectId } = Schema.Types;
 const uniqueValidator = require('mongoose-unique-validator')
 
-const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
     name: {
@@ -22,7 +22,7 @@ const userSchema = new Schema({
         type: String,
     },
     places: [{
-        type: Schema.Types.ObjectId,
+        type: ObjectId,
         required: true,
         ref: 'Place'
     }]
@@ -30,4 +30,4 @@ const userSchema = new Schema({
 
 userSchema.plugin(uniqueValidator);
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = model('User', userSchema);

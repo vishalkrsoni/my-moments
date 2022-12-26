@@ -70,13 +70,13 @@ const signup = async (req, res, next) => {
     image: req.file.path,
     places: []
   });
-
+  console.log('created')
   try {
     await createdUser.save();
   } catch (error) {
     return next(new HttpError('Creating new user failed, please try again later', 500));
   };
-
+  console.log('created',createdUser)
   let token;
   try {
     token = jwt.sign({
@@ -87,6 +87,7 @@ const signup = async (req, res, next) => {
   } catch (error) {
     const err = new HttpError('Signing up failed, please try again later.', 500)
   };
+  console.log('created1')
 
   res.status(201).json({
     userId: createdUser.id,
@@ -95,7 +96,6 @@ const signup = async (req, res, next) => {
     message: `Welcome ${name}`
   });
 };
-
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -143,7 +143,6 @@ const login = async (req, res, next) => {
   });
 
 };
-
 
 
 module.exports = {

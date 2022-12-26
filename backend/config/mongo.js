@@ -11,7 +11,7 @@ async function mongoConnect() {
         useCreateIndex: true,
         maxPoolSize: 150
       })
-    console.log("Connected to DB")
+    console.log("Connected to DB ")
   }
   catch (err) {
     console.log("Error Connecting to DB")
