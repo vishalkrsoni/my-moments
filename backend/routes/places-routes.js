@@ -37,9 +37,7 @@ router.patch('/:pid',
 updatePlacesById);
 
 
-router.post(
-    '/',
-    fileUpload.single('image'),
+router.post('/',fileUpload.single('image'),
     [check('title')
         .not()
         .isEmpty().

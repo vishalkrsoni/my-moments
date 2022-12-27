@@ -7,7 +7,7 @@ const cors = require('cors')
 const mongoose = require('mongoose');
 const mongoConnect = require('./config/mongo');
 
-const placesRoutes = require('./routes/places-routes');
+const placesRouter = require('./routes/places-routes');
 const usersRouter = require('./routes/users-routes');
 
 const HttpError = require('./models/http-error');
@@ -15,9 +15,22 @@ const { profileEnd } = require('console');
 
 const app = express();
 
+mongoose.connect(
+    `mongodb+srv://database:admin@cluster0.ytg92er.mongodb.net/?retryWrites=true&w=majority`,
+
+    {
+        useNewUrlParser: true,
+        useFindAndModify: false,
+        useUnifiedTopology: true
+    }
+);
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error: "));
+db.once("open", function () {
+    console.log("Connected successfully");
+});
 app.use(bodyPraser.json());
 app.use(cors())
-// mongoConnect()
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 app.use((req, res, next) => {
@@ -28,7 +41,7 @@ app.use((req, res, next) => {
 })
 
 
-app.use('/api/places', placesRoutes);
+app.use('/api/places', placesRouter);
 app.use('/api/users', usersRouter);
 
 app.use((req, res, next) => {
@@ -56,6 +69,6 @@ const LOCAL_HOST = process.env.LOCAL_HOST;
 const PORT = process.env.PORT;
 const HOST = process.env.HOST;
 
-app.listen(PORT || LOCAL_PORT , LOCAL_HOST, () => {
+app.listen(PORT || LOCAL_PORT, LOCAL_HOST, () => {
     console.log(`Listening on http://${LOCAL_HOST}:${PORT || LOCAL_PORT}`)
 });

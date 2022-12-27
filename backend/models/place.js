@@ -16,16 +16,16 @@ const placeSchema = new Schema({
     },
     address: {
         type: String,
-        required: true
+        // required: true
     },
     location: {
         lat: {
             type: Number,
-            required: true
+            // required: true
         },
         lng: {
             type: Number,
-            required: true
+            // required: true
         }
     },
     creator: {

@@ -71,11 +71,15 @@ const signup = async (req, res, next) => {
     places: []
   });
   console.log('created')
+
+
   try {
     await createdUser.save();
   } catch (error) {
     return next(new HttpError('Creating new user failed, please try again later', 500));
   };
+
+  
   console.log('created',createdUser)
   let token;
   try {

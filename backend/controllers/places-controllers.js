@@ -112,12 +112,12 @@ const createPlace = async (req, res, next) => {
 
     const { title, description, address } = req.body;
 
-    let coordinates;
-    try {
-        coordinates = await getCoordsForAddress(address);
-    } catch (error) {
-        return next(error);
-    };
+    let coordinates=75;
+    // try {
+    //     // coordinates = await getCoordsForAddress(address);
+    // } catch (error) {
+    //     return next(error);
+    // };
 
     const createdPlace = new Place(
         {
@@ -202,7 +202,7 @@ const deletePlacesById = async (req, res, next) => {
     res.status(200).json({ message: 'Deleted place.' });
 };
 
-module.exports={
+module.exports = {
     createPlace,
     getAllPlaces,
     getPlacesById,
