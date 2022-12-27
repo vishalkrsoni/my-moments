@@ -17,7 +17,6 @@ const app = express();
 
 mongoose.connect(
     `mongodb+srv://database:admin@cluster0.ytg92er.mongodb.net/?retryWrites=true&w=majority`,
-
     {
         useNewUrlParser: true,
         useFindAndModify: false,
@@ -70,5 +69,5 @@ const PORT = process.env.PORT;
 const HOST = process.env.HOST;
 
 app.listen(PORT || LOCAL_PORT, LOCAL_HOST, () => {
-    console.log(`Listening on http://${LOCAL_HOST}:${PORT || LOCAL_PORT}`)
+    console.log(`Listening on http://${HOST||LOCAL_HOST}:${PORT || LOCAL_PORT}`)
 });
