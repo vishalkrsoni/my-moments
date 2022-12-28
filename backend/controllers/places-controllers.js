@@ -112,7 +112,7 @@ const createPlace = async (req, res, next) => {
 
     const { title, description, address } = req.body;
 
-    let coordinates=75;
+    let coordinates=77;
     // try {
     //     // coordinates = await getCoordsForAddress(address);
     // } catch (error) {
@@ -202,7 +202,7 @@ const deletePlacesById = async (req, res, next) => {
     res.status(200).json({ message: 'Deleted place.' });
 };
 
-module.exports = {
+module.exports={
     createPlace,
     getAllPlaces,
     getPlacesById,
