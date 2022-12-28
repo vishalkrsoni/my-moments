@@ -65,7 +65,7 @@ const signup = async (req, res, next) => {
     return next(new HttpError('Creating new user failed, please try again later', 500));
   };
 
-let token;
+  let token;
   try {
     token = jwt.sign({
       userId: createdUser.id,
