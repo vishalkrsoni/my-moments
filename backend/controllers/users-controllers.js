@@ -29,35 +29,22 @@ const signup = async (req, res, next) => {
     return res.status(422).json(errors.array());
   };
   const { name, email, password } = req.body;
-  console.log('called', name, password)
   let repetedEmail = false;
   try {
-    console.log('test1')
-    // repetedEmail = await User.findOne({ email: email });
-
-    console.log('test2')
-
+    repetedEmail = await User.findOne({ email: email });
   } catch (error) {
-    console.log('test3')
-
     return next(new HttpError('Signup up failed, please try again later', 500));
   };
-
   if (repetedEmail) {
     return next(
       new HttpError('User with this email already exist, please login', 422)
     )
   }
 
-  console.log('called2', name, password)
-
   let hashedPassword;
   try {
     hashedPassword = await bcrypt.hash(password, 12);
-    console.log(hashedPassword)
-
   } catch (err) {
-
     return next(
       new HttpError('Could not create user, please try again.', 500)
     )
@@ -72,16 +59,13 @@ const signup = async (req, res, next) => {
   });
   console.log('created')
 
-
   try {
     await createdUser.save();
   } catch (error) {
     return next(new HttpError('Creating new user failed, please try again later', 500));
   };
 
-  
-  console.log('created',createdUser)
-  let token;
+let token;
   try {
     token = jwt.sign({
       userId: createdUser.id,

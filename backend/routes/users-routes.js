@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path')
 
 const { check } = require('express-validator');
 
@@ -7,7 +8,14 @@ const fileUpload = require('../middelweare/file-upload');
 
 const router = express.Router();
 
-router.get('/', getUsers);
+const root = path.resolve('../../../../../frontend/public/index.html')
+const root1 = path.resolve(__dirname + '/frontend/public/index.html')
+
+
+// router.get('/', (req,res)=>{
+//     res.sendFile(root)
+// });
+router.get('/', getUsers)
 
 router.post('/signup',
     //mullter

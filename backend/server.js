@@ -15,6 +15,9 @@ const { profileEnd } = require('console');
 
 const app = express();
 
+const root = path.resolve('../../../../../frontend/public/index.html')
+
+
 mongoose.connect(
     `mongodb+srv://database:admin@cluster0.ytg92er.mongodb.net/?retryWrites=true&w=majority`,
     {
@@ -23,6 +26,8 @@ mongoose.connect(
         useUnifiedTopology: true
     }
 );
+
+
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", function () {
@@ -30,6 +35,8 @@ db.once("open", function () {
 });
 app.use(bodyPraser.json());
 app.use(cors())
+
+
 app.use('/uploads/images', express.static(path.join('uploads', 'images')));
 
 app.use((req, res, next) => {
@@ -38,7 +45,10 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
     next()
 })
-
+app.get('/', function (req, res) {
+    console.log(root);
+    res.sendFile(root);
+});
 
 app.use('/api/places', placesRouter);
 app.use('/api/users', usersRouter);
@@ -68,6 +78,8 @@ const LOCAL_HOST = process.env.LOCAL_HOST;
 const PORT = process.env.PORT;
 const HOST = process.env.HOST;
 
+
 app.listen(PORT || LOCAL_PORT, LOCAL_HOST, () => {
-    console.log(`Listening on http://${LOCAL_HOST || HOST }:${PORT || LOCAL_PORT}`)
+    console.log(`Listening on http://${LOCAL_HOST || HOST}:${PORT || LOCAL_PORT}`)
+    console.log(root)
 });
