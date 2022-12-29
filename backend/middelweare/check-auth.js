@@ -18,4 +18,4 @@ module.exports = (req, res, next) => {
 		const err = new HttpError('Authentication failed!', 403);
 		return next(err);
 	}
-};
+}

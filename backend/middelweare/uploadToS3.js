@@ -27,7 +27,6 @@ const upload = multer({
     //     key: (req, file, cb) => cb(null, new Date().getTime() + '_' + req.file.originalname),
     //     transform: (req, file, cb) => cb(null, sharp().jpeg())
     //   },
-
     //   {
     //     id: 'small',
     //     key: (req, file, cb) => cb(null, new Date().getTime() + '_small_' + req.file.originalname),
@@ -39,6 +38,7 @@ const upload = multer({
     }
   })
 })
+
 
 upload.single('file')
 

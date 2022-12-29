@@ -7,7 +7,7 @@ const multerS3 = require('multer-s3')
 const sharp = require('sharp')
 dotenv.config()
 
-const port = 8000
+const port = process.env.PORT
 const app = express();
 
 // configuring  aws instance
@@ -26,28 +26,29 @@ const upload = multer({
   storage: multerS3({
     bucket: Bucket,
     s3: s3,
-    acl: 'public-read', // access control list
-    // shouldTransform: true,
-    // transforms: [
-    //   {
-    //     id: 'original',
-    //     key: (req, file, cb) => cb(null, new Date().getTime() + '_' + req.file.originalname),
-    //     transform: (req, file, cb) => cb(null, sharp().jpeg())
-    //   },
+    // acl: 'public-read', // access control list
+    shouldTransform: true,
+    transforms: [
+      {
+        id: 'original',
+        key: (req, file, cb) => cb(null, new Date().getTime() + '_' + req.file.originalname),
+        transform: (req, file, cb) => cb(null, sharp().jpeg())
+      },
 
-    //   {
-    //     id: 'small',
-    //     key: (req, file, cb) => cb(null, new Date().getTime() + '_small_' + req.file.originalname),
-    //     transform: (req, file, cb) => cb(null, sharp().resize(400, 300).jpeg())
-    //   }
-    // ],
+      {
+        id: 'small',
+        key: (req, file, cb) => cb(null, new Date().getTime() + '_small_' + req.file.originalname),
+        transform: (req, file, cb) => cb(null, sharp().resize(400, 300).jpeg())
+      }
+    ],
     key: (req, file, cb) => {
-      cb(null, file.originalname)
+      cb(null, Date.now() + file.originalname)
     }
   })
 })
 
 app.listen(port, () => console.log(`server started at http://localhost:${port}`))
+
 
 
 
@@ -99,25 +100,34 @@ app.listen(port, () => console.log(`server started at http://localhost:${port}`)
 
 
 
-app.post('/', upload.single('file'), (req, res) => {
-  console.log('upload')
-  res.send({
-    imageUrl: req.file.location
-  })
+app.post('/', upload.single('file'), async (req, res) => {
+  try {
+    let url = await req.file.location
+    console.log('upload')
+    res.send({
+      imageUrl: url
+    })
+  } catch (err) {
+    console.log(err)
+    res.send(err)
+  }
 })
-app.get('/', async (req, res) => {
+
+app.get('/list', async (req, res) => {
   let pictures = await s3.listObjectsV2({
     bucket: Bucket
   }).promise()
-
   let fileNames = pictures.Contents.map(item => item.key)
   res.send({
     fileNames
   })
 })
+
+
 app.get('/:fileName', async (req, res) => {
   const fileName = req.params.fileName
   let pic = await s3.getObject({
+
     bucket: Bucket,
     key: fileName
   }).promise()
