@@ -41,7 +41,7 @@ const getPlacesById = async (req, res, next) => {
 	};
 	if (!place) {
 		return next(
-			new HttpError('Could not find a place for the provided id.', 404)
+			new HttpError('You have not added any memory.', 404)
 		);
 	};
 
@@ -82,7 +82,10 @@ const updatePlacesById = async (req, res, next) => {
 		return next(new HttpError('Could not find a place for the provided id.', 404));
 	};
 
-	res.status(200).json({ place: place.toObject({ getters: true }), message: `Place with id ${place.id} has been updated successfully` });
+	res.status(200).json({
+		place: place.toObject({ getters: true }),
+		message: `Place with id ${place.id} has been updated successfully`
+	});
 };
 
 const getPlacesByUserId = async (req, res, next) => {
@@ -96,10 +99,12 @@ const getPlacesByUserId = async (req, res, next) => {
 	};
 	if (!userWithPlaces || userWithPlaces.places.length === 0) {
 		return next(
-			new HttpError('Could not find a places for user with the provided id.', 404)
+			new HttpError('Has Not Added Any Memory.!', 404)
 		);
 	}
-	res.status(200).json({ places: userWithPlaces.places.map(place => place.toObject({ getters: true })) });
+	res.status(200).json({
+		places: userWithPlaces.places.map(place => place.toObject({ getters: true }))
+	});
 };
 
 const createPlace = async (req, res, next) => {
@@ -163,9 +168,8 @@ const createPlace = async (req, res, next) => {
 };
 
 const deletePlacesById = async (req, res, next) => {
-
-	const placeId = req.params.pid;
 	let place;
+	const placeId = req.params.pid;
 
 	try {
 		place = await Place.findById(placeId).populate('creator');
@@ -189,7 +193,7 @@ const deletePlacesById = async (req, res, next) => {
 	const imagePath = place.image;
 	try {
 		const sess = await mongoose.startSession();
-		console.log(sess);
+		// console.log(sess);
 		sess.startTransaction();
 		await place.deleteOne({ session: sess });
 		place.creator.places.pull(place);
@@ -202,7 +206,9 @@ const deletePlacesById = async (req, res, next) => {
 	fs.unlink(imagePath, (error) => {
 		console.log(error);
 	})
-	res.status(200).json({ message: 'Deleted place.' });
+	res.status(200).json({
+		message: 'Deleted place.'
+	});
 };
 
 module.exports = {
