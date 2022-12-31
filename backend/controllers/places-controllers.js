@@ -26,14 +26,14 @@ const getAllPlaces = async (req, res, next) => {
 			new HttpError('Could not find any place.', 404)
 		);
 	};
-
-	res.status(200).json({ places: places.map(place => place.toObject({ getters: true })) });
+	res.status(200).json({ 
+		places: places.map(place => place.toObject({ getters: true })) });
 };
+
 
 const getPlacesById = async (req, res, next) => {
 	const placeId = req.params.pid;
 	let place;
-
 	try {
 		place = await Place.findById(placeId);
 	} catch (err) {
@@ -45,13 +45,18 @@ const getPlacesById = async (req, res, next) => {
 		);
 	};
 
-	res.status(200).json({ place: place.toObject({ getters: true }) });
+	res.status(200).json({
+		place: place.toObject({ getters: true })
+	});
 };
+
 
 const updatePlacesById = async (req, res, next) => {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
-		res.status(422).json({ errors: errors.array() })
+		res.status(422).json({ 
+			errors: errors.array() 
+		})
 	};
 	const { newTitle, newDescription } = req.body;
 	const placeId = req.params.pid;
@@ -116,7 +121,6 @@ const createPlace = async (req, res, next) => {
 	};
 
 	const { title, description, address } = req.body;
-
 	let coordinates = {
 		lat: 27.173891,
 		lng: 78.042068
@@ -136,9 +140,7 @@ const createPlace = async (req, res, next) => {
 			image: req.file.path,
 			creator: req.userData.userId
 		});
-
 	let user;
-
 	try {
 		user = await User.findById(
 			req.userData.userId
@@ -147,12 +149,10 @@ const createPlace = async (req, res, next) => {
 		const err = res.status(500).json('Fetching user failed, please try again');
 		return next(err);
 	};
-
 	if (!user) {
 		const err = res.status(404).json('User with provided id don`t exist')
 		return next(err);
 	};
-
 	try {
 		const sess = await mongoose.startSession();
 		sess.startTransaction();
@@ -170,7 +170,6 @@ const createPlace = async (req, res, next) => {
 const deletePlacesById = async (req, res, next) => {
 	let place;
 	const placeId = req.params.pid;
-
 	try {
 		place = await Place.findById(placeId).populate('creator');
 	} catch (error) {
